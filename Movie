@@ -1,0 +1,132 @@
+import random
+
+movies = {
+    "Action": [
+        "Mad Max: Fury Road", "Die Hard", "John Wick", "The Dark Knight", "Gladiator",
+        "The Avengers", "Black Panther", "Inception", "Mission Impossible", "The Matrix",
+        "Avengers: Endgame", "Iron Man", "Thor: Ragnarok", "Captain America", "The Batman",
+        "Shang-Chi", "Doctor Strange", "Aquaman", "Justice League", "Deadpool"
+    ],
+    "Comedy": [
+        "The Hangover", "Superbad", "Step Brothers", "Anchorman", "Tropic Thunder",
+        "Zoolander", "21 Jump Street", "22 Jump Street", "Dumb and Dumber", "Ted",
+        "American Pie", "Meet the Fockers", "Mr. Bean's Holiday", "White Chicks", "Hot Fuzz",
+        "Shaun of the Dead", "Rush Hour", "Central Intelligence", "Yes Man", "Bruce Almighty"
+    ],
+    "Drama": [
+        "Forrest Gump", "The Shawshank Redemption", "The Godfather", "The Green Mile", "A Beautiful Mind",
+        "Titanic", "Schindler's List", "Fight Club", "The Pursuit of Happyness", "Cast Away",
+        "Good Will Hunting", "12 Angry Men", "American Beauty", "Joker", "Requiem for a Dream",
+        "Moonlight", "The Social Network", "Her", "Marriage Story", "Whiplash"
+    ],
+    "Sci-Fi": [
+        "Interstellar", "Inception", "The Matrix", "Blade Runner", "Blade Runner 2049",
+        "Arrival", "Dune", "Ex Machina", "Star Wars: A New Hope", "Star Wars: The Empire Strikes Back",
+        "Star Wars: Return of the Jedi", "Star Wars: The Force Awakens", "The Fifth Element",
+        "Gravity", "Avatar", "Elysium", "Oblivion", "The Martian", "Ready Player One", "Tron: Legacy"
+    ],
+    "Horror": [
+        "The Exorcist", "Hereditary", "The Conjuring", "The Conjuring 2", "The Nun",
+        "Annabelle", "Annabelle: Creation", "The Ring", "The Grudge", "Insidious",
+        "Insidious: Chapter 2", "Insidious: The Last Key", "Sinister", "Sinister 2", "It",
+        "It Chapter Two", "A Nightmare on Elm Street", "Halloween", "Scream", "Get Out"
+    ],
+    "Fiction": [
+        "The Hobbit", "The Lord of the Rings: The Fellowship of the Ring", "The Lord of the Rings: The Two Towers",
+        "The Lord of the Rings: The Return of the King", "Harry Potter and the Sorcerer’s Stone",
+        "Harry Potter and the Chamber of Secrets", "Harry Potter and the Prisoner of Azkaban",
+        "Harry Potter and the Goblet of Fire", "Harry Potter and the Order of the Phoenix",
+        "Harry Potter and the Half-Blood Prince", "Harry Potter and the Deathly Hallows Part 1",
+        "Harry Potter and the Deathly Hallows Part 2", "Fantastic Beasts and Where to Find Them",
+        "Fantastic Beasts: The Crimes of Grindelwald", "Percy Jackson & the Olympians: The Lightning Thief",
+        "Percy Jackson: Sea of Monsters", "Pan’s Labyrinth", "Stardust", "Eragon", "The Golden Compass"
+    ],
+    "Mystery": [
+        "Se7en", "Zodiac", "Shutter Island", "Gone Girl", "Prisoners",
+        "The Prestige", "Memento", "The Girl with the Dragon Tattoo", "Mystic River", "The Sixth Sense",
+        "The Others", "Identity", "Murder on the Orient Express", "Knives Out", "Glass Onion",
+        "The Da Vinci Code", "Angels and Demons", "Inferno", "Secret Window", "Insomnia"
+    ],
+    "Rom-Com": [
+        "Crazy Rich Asians", "10 Things I Hate About You", "Notting Hill", "Pretty Woman", "Love Actually",
+        "The Proposal", "While You Were Sleeping", "You've Got Mail", "Sleepless in Seattle", "When Harry Met Sally",
+        "Legally Blonde", "Clueless", "How to Lose a Guy in 10 Days", "Friends with Benefits", "No Strings Attached",
+        "Hitch", "The Holiday", "Sweet Home Alabama", "Bride Wars", "Always Be My Maybe"
+    ],
+    "Historical": [
+        "Braveheart", "Gladiator", "Troy", "Kingdom of Heaven", "300",
+        "Alexander", "The Last Samurai", "Lawrence of Arabia", "Schindler’s List", "Lincoln",
+        "Gandhi", "The King’s Speech", "Darkest Hour", "Dunkirk", "Pearl Harbor",
+        "Apocalypto", "Spartacus", "Ben-Hur", "The Patriot", "The Imitation Game"
+    ]
+}
+
+#Movie Recommendation
+def get_recommendations():
+    genre = input(" 🧐 Enter the genre you want to search : ").strip().title()
+    print(f"🔍 You entered genre: '{genre}'")
+    if genre not in movies:
+        print(" 🤖 OOPS Entered Genre not found!")
+        return
+
+    num = int(input("How many movies do you want me to recommend ? (1–20): "))
+    if num < 1 or num > 20:
+        print(" 🧐 Please enter a number between 1-20.")
+        return
+
+    picks = random.sample(movies[genre], num)
+    print("\n🫡 Here are  'Your Recommendations' Feel Free to Scroll for More :")
+    for m in picks:
+        print("-", m)
+
+# Adding a New Movie / Genre
+def add_movie():
+    title = input("Enter the movie title : ").title().lower()
+    genre = input("Enter the  genre : ").title().lower()
+    if genre not in movies:
+        movies[genre] = []
+    if title not in movies[genre]:
+        movies[genre].append(title)
+        print(f" 🫡 Here the  movie : '{title}' added under the genre : '{genre}'")
+    else:
+        print(f"🧐 Given movie title '{title}' already exists in genre : '{genre}'")
+
+#Search for a movie 
+def search_movie():
+    title = input("Enter movie title you want to search: ").strip().lower()
+    for gnr, ml in movies.items():
+        for movie in ml:
+            if movie.lower() == title:
+                print(f"🫡 Found the movie: '{movie}' in genre: {gnr}")
+                return
+    print(" 🧐 Oopss Entered Movie not found!")
+
+#Show all the movie
+def show_all_movies():
+    print("\n🎞️ Here's the full movie list by genre:\n")
+    for genre, titles in movies.items():
+        print(f" {genre} ({len(titles)} movies):")
+        for title in titles:
+            print("  -", title)
+        print()
+
+def main():
+    while True:
+        print("\n 🎬 Welcome to 'Movie Recommendation System'🎬")
+        print("1. Get Movie Recommendations (1–20)")
+        print("2. Add Movie / Genre")
+        print("3. Search for a Movie")
+        print("4. Show the movie list by genre")
+        print("5. Exit the system ")
+        choice = input("Choose (1-5): ")
+        if choice == "1": get_recommendations()
+        elif choice == "2": add_movie()
+        elif choice == "3": search_movie()
+        elif choice == "4": show_all_movies()
+        elif choice == "5":
+            print("👋 Goodbye! Thank you for using 'Movie Recommendation System'. ")
+            break
+        else:
+            print("🤖 Invalid choice Please Enter a Valid Number! ")
+
+main()
