@@ -61,72 +61,102 @@ movies = {
     ]
 }
 
-#Movie Recommendation
+# Display all available genres
+def display_genres():
+    print("\n🎯 Available Genres:")
+    for genre in movies.keys():
+        print("-", genre)
+    print()
+
+# Movie Recommendation
 def get_recommendations():
-    genre = input(" 🧐 Enter the genre you want to search : ").strip().title()
+    display_genres()
+    genre = input(" 🧐 Enter the genre you want to search: ").strip().title()
     print(f"🔍 You entered genre: '{genre}'")
     if genre not in movies:
-        print(" 🤖 OOPS Entered Genre not found!")
+        print(" 🤖 OOPS! Entered genre not found!")
         return
 
-    num = int(input("How many movies do you want me to recommend ? (1–20): "))
-    if num < 1 or num > 20:
-        print(" 🧐 Please enter a number between 1-20.")
+    try:
+        num = int(input("How many movies do you want me to recommend? (1–20): "))
+        if num < 1 or num > 20:
+            print(" 🧐 Please enter a number between 1 and 20.")
+            return
+    except ValueError:
+        print(" ⚠️ Invalid input! Please enter an integer number.")
         return
+
+    if num > len(movies[genre]):
+        print(f" ⚠️ Only {len(movies[genre])} movies are available in this genre.")
+        num = len(movies[genre])
 
     picks = random.sample(movies[genre], num)
-    print("\n🫡 Here are  'Your Recommendations' Feel Free to Scroll for More :")
+    print("\n🫡 Here are 'Your Recommendations' – Feel free to scroll for more:")
     for m in picks:
         print("-", m)
 
 # Adding a New Movie / Genre
 def add_movie():
-    title = input("Enter the movie title : ").title().lower()
-    genre = input("Enter the  genre : ").title().lower()
+    display_genres()
+    title = input("Enter the movie title: ").strip().title()
+    genre = input("Enter the genre: ").strip().title()
     if genre not in movies:
         movies[genre] = []
+        print(f" 🎉 New genre '{genre}' created.")
+
     if title not in movies[genre]:
         movies[genre].append(title)
-        print(f" 🫡 Here the  movie : '{title}' added under the genre : '{genre}'")
+        print(f" 🫡 Movie '{title}' added under genre '{genre}'.")
     else:
-        print(f"🧐 Given movie title '{title}' already exists in genre : '{genre}'")
+        print(f" 🧐 Movie '{title}' already exists in genre '{genre}'.")
 
-#Search for a movie 
+# Search for a movie
 def search_movie():
     title = input("Enter movie title you want to search: ").strip().lower()
+    found = False
     for gnr, ml in movies.items():
         for movie in ml:
             if movie.lower() == title:
                 print(f"🫡 Found the movie: '{movie}' in genre: {gnr}")
-                return
-    print(" 🧐 Oopss Entered Movie not found!")
+                found = True
+                break
+        if found:
+            break
+    if not found:
+        print(" 🧐 Oops! Movie not found!")
 
-#Show all the movie
+# Show all the movies
 def show_all_movies():
     print("\n🎞️ Here's the full movie list by genre:\n")
     for genre, titles in movies.items():
-        print(f" {genre} ({len(titles)} movies):")
+        print(f"{genre} ({len(titles)} movies):")
         for title in titles:
-            print("  -", title)
+            print("-", title)
         print()
 
+# Main Program
 def main():
     while True:
-        print("\n 🎬 Welcome to 'Movie Recommendation System'🎬")
+        print("\n🎬 Welcome to 'Movie Recommendation System' 🎬")
         print("1. Get Movie Recommendations (1–20)")
         print("2. Add Movie / Genre")
         print("3. Search for a Movie")
-        print("4. Show the movie list by genre")
-        print("5. Exit the system ")
-        choice = input("Choose (1-5): ")
-        if choice == "1": get_recommendations()
-        elif choice == "2": add_movie()
-        elif choice == "3": search_movie()
-        elif choice == "4": show_all_movies()
+        print("4. Show all movies by genre")
+        print("5. Exit the system")
+
+        choice = input("Choose (1-5): ").strip()
+        if choice == "1":
+            get_recommendations()
+        elif choice == "2":
+            add_movie()
+        elif choice == "3":
+            search_movie()
+        elif choice == "4":
+            show_all_movies()
         elif choice == "5":
-            print("👋 Goodbye! Thank you for using 'Movie Recommendation System'. ")
+            print("👋 Goodbye! Thank you for using 'Movie Recommendation System'.")
             break
         else:
-            print("🤖 Invalid choice Please Enter a Valid Number! ")
+            print("🤖 Invalid choice! Please enter a valid number (1-5).")
 
 main()
